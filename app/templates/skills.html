@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Skills | JobMatch{% endblock %}
+
+{% block additional_css %}
+<style>
+    .category-card {
+        margin-bottom: 20px;
+    }
+    .skill-checkbox {
+        margin-right: 10px;
+    }
+    .skill-item {
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h1 class="display-5">Manage Your Skills</h1>
+        <p class="lead">Select the skills you have from each category below</p>
+    </div>
+</div>
+
+<form method="post" action="">
+    {{ form.hidden_tag() }}
+    
+    <div class="row">
+        {% for category, skills in skills_by_category %}
+        <div class="col-md-6">
+            <div class="card shadow category-card">
+                <div class="card-header py-3">
+                    <h5 class="m-0 font-weight-bold">{{ category.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="skill-list">
+                        {% for skill in skills %}
+                        <div class="form-check skill-item">
+                            <input class="form-check-input" type="checkbox" 
+                                   id="skill-{{ skill.id }}" name="{{ form.skills.name }}" 
+                                   value="{{ skill.id }}"
+                                   {% if skill in user_skills %}checked{% endif %}>
+                            <label class="form-check-label" for="skill-{{ skill.id }}">
+                                <strong>{{ skill.name }}</strong>
+                                {% if skill.description %}
+                                <p class="text-muted small mb-0">{{ skill.description }}</p>
+                                {% endif %}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12 mt-3">
+            <div class="d-flex justify-content-between">
+                <a href="{{ url_for('profile') }}" class="btn btn-secondary">Back to Profile</a>
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block additional_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Optional: Add any JavaScript functionality here for skill selection
+    });
+</script>
+{% endblock %} 
