@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Job Search App{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">Find Your Perfect Job Match</h1>
+        <p class="lead mb-5">Connect your skills with the jobs that need them the most.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">For Job Seekers</h5>
+                        <p class="card-text">Create a profile, add your skills, and find jobs that match your expertise.</p>
+                        <a href="#" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Browse Jobs</h5>
+                        <p class="card-text">Explore available positions sorted by compatibility with your skill set.</p>
+                        <a href="#" class="btn btn-outline-primary">View Jobs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

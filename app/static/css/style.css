@@ -1,0 +1,39 @@
+/* Custom styles for Job Search App */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.card {
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.btn-primary {
+    border-radius: 20px;
+    padding: 8px 20px;
+}
+
+.btn-outline-primary {
+    border-radius: 20px;
+    padding: 8px 20px;
+}
+
+footer {
+    margin-top: 3rem;
+    border-top: 1px solid #eaeaea;
+} 
