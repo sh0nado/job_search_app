@@ -3,12 +3,14 @@ from flask_login import login_user, logout_user, current_user, login_required
 from urllib.parse import urlparse
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, UserProfileForm, SkillsSelectionForm
-from app.models import User, Skill, SkillCategory
+from app.models import User, Skill, SkillCategory, Job
 from datetime import datetime
 
 @app.route('/')
 @app.route('/index')
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('jobs'))
     return render_template('index.html', year=datetime.now().year)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -109,4 +111,49 @@ def skills():
                           skills_by_category=skills_by_category,
                           user_skills=user_skills,
                           title='Manage Skills',
-                          year=datetime.now().year) 
+                          year=datetime.now().year)
+
+@app.route('/jobs')
+@login_required
+def jobs():
+    # Get all jobs from the database
+    all_jobs = Job.query.all()
+    
+    # Calculate compatibility score for each job
+    jobs_with_scores = []
+    for job in all_jobs:
+        score = job.compatibility_score(current_user)
+        jobs_with_scores.append((job, score))
+    
+    # Sort jobs by compatibility score in descending order
+    jobs_with_scores.sort(key=lambda x: x[1], reverse=True)
+    
+    return render_template('jobs.html', 
+                         jobs_with_scores=jobs_with_scores,
+                         title='Job Listings',
+                         year=datetime.now().year)
+
+@app.route('/job/<int:job_id>')
+@login_required
+def job_details(job_id):
+    # Get the job by ID
+    job = Job.query.get_or_404(job_id)
+    
+    # Calculate compatibility score
+    score = job.compatibility_score(current_user)
+    
+    # Get user skills and job skills for comparison
+    user_skills = set(current_user.skills)
+    job_skills = set(job.skills)
+    
+    # Find matching and missing skills
+    matching_skills = user_skills.intersection(job_skills)
+    missing_skills = job_skills - user_skills
+    
+    return render_template('job_details.html',
+                         job=job,
+                         score=score,
+                         matching_skills=matching_skills,
+                         missing_skills=missing_skills,
+                         title=job.title,
+                         year=datetime.now().year) 
